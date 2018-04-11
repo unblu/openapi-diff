@@ -9,7 +9,7 @@
 
     <groupId>com.qdesrame</groupId>
     <artifactId>openapi-diff</artifactId>
-    <version>1.1.2.unblu-1</version>
+    <version>1.1.2.unblu-2</version>
     <packaging>jar</packaging>
 
     <name>openapi-diff</name>
