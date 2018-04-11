@@ -39,7 +39,9 @@ public class ComposedSchemaDiffResult extends SchemaDiffResult {
                 Discriminator leftDis = leftComposedSchema.getDiscriminator();
                 Discriminator rightDis = rightComposedSchema.getDiscriminator();
                 if (leftDis == null || rightDis == null || leftDis.getPropertyName() == null || rightDis.getPropertyName() == null) {
-                    throw new IllegalArgumentException("discriminator or property not found for oneOf schema");
+                    //XXX see: https://github.com/quen2404/openapi-diff/issues/29
+                    //throw new IllegalArgumentException("discriminator or property not found for oneOf schema");
+                    return Optional.empty();
                 } else if (!leftDis.getPropertyName().equals(rightDis.getPropertyName()) ||
                         (CollectionUtils.isEmpty(leftComposedSchema.getOneOf()) || CollectionUtils.isEmpty(rightComposedSchema.getOneOf()))) {
                     changedSchema.setOldSchema(left);
