@@ -22,9 +22,36 @@ Available on [Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%2
 <dependency>
     <groupId>com.qdesrame</groupId>
     <artifactId>openapi-diff</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
 </dependency>
 ```
+
+# Docker
+
+Available on [Docker Hub](https://hub.docker.com/r/quen2404/openapi-diff/) as `quen2404/openapi-diff`.
+
+## Build the image
+
+This is only required if you want to try new changes in the Dockerfile of this project.
+
+```bash
+docker build -t local-openapi-diff .
+```
+
+You can replace the local image name `local-openapi-diff` by any name of your choice.
+
+## Run an instance
+
+In this example the `$(pwd)/src/test/resources` directory is mounted in the `/specs` directory of the container
+in readonly mode (`ro`).
+
+```bash
+docker run -t \
+  -v $(pwd)/src/test/resources:/specs:ro \
+  quen2404/openapi-diff /specs/path_1.yaml /specs/path_2.yaml
+```
+
+The remote name `quen2404/openapi-diff` can be replaced with `local-openapi-diff` or the name you gave to your local image.
 
 # Usage
 OpenDiff can read swagger api spec from json file or http.
@@ -47,6 +74,8 @@ usage: openapi-diff <old> <new>
                                 output in file
     --off                       No information printed
     --query <property=value>    use query param for authorisation
+    --state                     Only output diff state: no_changes,
+                                incompatible, compatible
     --trace                     be extra verbose
     --version                   print the version information and exit
     --warn                      Print warning information
@@ -99,6 +128,11 @@ try {
     e.printStackTrace();
 }
 ```
+
+### Extensions
+This project uses Java Service Provider Inteface (SPI) so additional extensions can be added. 
+
+To build your own extension, you simply need to create a `src/main/resources/META-INF/services/com.qdesrame.openapi.diff.compare.ExtensionDiff` file with the full classname of your implementation.  Your class must also implement the `com.qdesrame.openapi.diff.compare.ExtensionDiff` interface.  Then, including your library with the `openapi-diff` module will cause it to be triggered automatically.
 
 # Example
 ### CLI Output
